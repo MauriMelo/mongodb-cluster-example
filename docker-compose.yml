@@ -1,0 +1,159 @@
+version: '3.8'
+
+services:
+  mongodb-configsvr-01:
+    image: mongo:latest
+    container_name: mongodb-configsvr-01
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-configsvr-01:/data/db
+      - mongodb-configsvr-01-config:/data/configdb
+    command: ["--configsvr", "--replSet", "configserver", "--port", "27017"]
+  mongodb-configsvr-02:
+    image: mongo:latest
+    container_name: mongodb-configsvr-02
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb-configsvr-02:/data/db
+      - mongodb-configsvr-02-config:/data/configdb
+    command: ["--configsvr", "--replSet", "configserver", "--port", "27017"]
+  mongodb-configsvr-03:
+    image: mongo:latest
+    container_name: mongodb-configsvr-03
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongodb-configsvr-03:/data/db
+      - mongodb-configsvr-03-config:/data/configdb
+    command: ["--configsvr", "--replSet", "configserver", "--port", "27017"]
+  
+  #shards
+  mongodb-shard-node-01:
+    image: mongo:latest
+    container_name: mongodb-shard-node-01
+    ports:
+      - "27027:27017"
+    volumes:
+      - mongodb-shard-node-01:/data/db
+      - mongodb-shard-node-01-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard01", "--port", "27017"]
+
+  mongodb-shard-node-02:
+    image: mongo:latest
+    container_name: mongodb-shard-node-02
+    ports:
+      - "27028:27017"
+    volumes:
+      - mongodb-shard-node-02:/data/db
+      - mongodb-shard-node-02-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard01", "--port", "27017"]
+
+  mongodb-shard-node-03:
+    image: mongo:latest
+    container_name: mongodb-shard-node-03
+    ports:
+      - "27029:27017"
+    volumes:
+      - mongodb-shard-node-03:/data/db
+      - mongodb-shard-node-03-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard01", "--port", "27017"]
+
+  mongodb-shard-node-04:
+    image: mongo:latest
+    container_name: mongodb-shard-node-04
+    ports:
+      - "27030:27017"
+    volumes:
+      - mongodb-shard-node-04:/data/db
+      - mongodb-shard-node-04-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard02", "--port", "27017"]
+
+  mongodb-shard-node-05:
+    image: mongo:latest
+    container_name: mongodb-shard-node-05
+    ports:
+      - "27031:27017"
+    volumes:
+      - mongodb-shard-node-05:/data/db
+      - mongodb-shard-node-05-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard02", "--port", "27017"]
+
+  mongodb-shard-node-06:
+    image: mongo:latest
+    container_name: mongodb-shard-node-06
+    ports:
+      - "27032:27017"
+    volumes:
+      - mongodb-shard-node-06:/data/db
+      - mongodb-shard-node-06-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard02", "--port", "27017"]
+
+  mongodb-shard-node-07:
+    image: mongo:latest
+    container_name: mongodb-shard-node-07
+    ports:
+      - "27033:27017"
+    volumes:
+      - mongodb-shard-node-07:/data/db
+      - mongodb-shard-node-07-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard03", "--port", "27017"]
+
+  mongodb-shard-node-08:
+    image: mongo:latest
+    container_name: mongodb-shard-node-08
+    ports:
+      - "27034:27017"
+    volumes:
+      - mongodb-shard-node-08:/data/db
+      - mongodb-shard-node-08-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard03", "--port", "27017"]
+
+  mongodb-shard-node-09:
+    image: mongo:latest
+    container_name: mongodb-shard-node-09
+    ports:
+      - "27035:27017"
+    volumes:
+      - mongodb-shard-node-09:/data/db
+      - mongodb-shard-node-09-config:/data/configdb
+    command: ["--shardsvr", "--replSet", "shard03", "--port", "27017"]
+
+  mongodb-router-node-01:
+    image: mongo:latest
+    container_name: mongodb-router-node-01
+    ports:
+      - "27036:27017"
+    volumes:
+      - mongodb-router-node-01:/data/db
+      - mongodb-router-node-01-config:/data/configdb
+    command: "mongos --configdb configserver/mongodb-configsvr-01:27017,mongodb-configsvr-02:27017,mongodb-configsvr-03:27017 --port 27017 --bind_ip_all"
+
+volumes:
+  mongodb-configsvr-01:
+  mongodb-configsvr-01-config:
+  mongodb-configsvr-02:
+  mongodb-configsvr-02-config:
+  mongodb-configsvr-03:
+  mongodb-configsvr-03-config:
+  mongodb-shard-node-01:
+  mongodb-shard-node-01-config:
+  mongodb-shard-node-02:
+  mongodb-shard-node-02-config:
+  mongodb-shard-node-03:
+  mongodb-shard-node-03-config:
+  mongodb-shard-node-04:
+  mongodb-shard-node-04-config:
+  mongodb-shard-node-05:
+  mongodb-shard-node-05-config:
+  mongodb-shard-node-06:
+  mongodb-shard-node-06-config:
+  mongodb-shard-node-07:
+  mongodb-shard-node-07-config:
+  mongodb-shard-node-08:
+  mongodb-shard-node-08-config:
+  mongodb-shard-node-09:
+  mongodb-shard-node-09-config:
+  mongodb-router-node-01:
+  mongodb-router-node-01-config:
